@@ -42,12 +42,12 @@ function printReceipt(inputs){
 				if(!product.includes(sprite)){
 					qty = getQty(inputs, sprite);
 					ttl = qty * price;
-					product.push(sprite);
 					if(qty > 1){
 						unit = ' ' + i.Unit + 's';
 					}else{
 						unit = ' ' + i.Unit;
 					}
+					product.push(sprite);
 					receipt += getProduct(prodName, qty, unit, price.toFixed(2), ttl.toFixed(2));
 					ttlYuan += ttl;
 				}
@@ -72,7 +72,7 @@ function printReceipt(inputs){
 
 function getQty(prod, id){
 	let qty = 0;
-	return qty = prod.reduce((qty, cur) => cur.Barcode === id ? ++qty : qty, 0);
+	return qty = prod.reduce((acc, cur) => cur.Barcode === id ? ++acc : acc, 0);
 }
 
 function getProduct(prodName, qty, unit, price, ttl){
