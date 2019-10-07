@@ -26,29 +26,19 @@ function printReceipt(inputs){
 		switch(i.Barcode){
 			case cola:
 				if(!product.includes(cola)){
+					product.push(cola);
 					qty = getQty(inputs, cola);
 					ttl = qty * price;
-					product.push(cola);
-					if(qty > 1){
-						unit = ' ' + i.Unit + 's';
-					}else{
-						unit = ' ' + i.Unit;
-					}
-					receipt += getProduct(prodName, qty, unit, price.toFixed(2), ttl.toFixed(2));
+					receipt += getReceipt(qty,inputs, ttl, price, receipt, i, prodName);
 					ttlYuan += ttl;
 				}
 				break;
 			case sprite:
 				if(!product.includes(sprite)){
+					product.push(sprite);
 					qty = getQty(inputs, sprite);
 					ttl = qty * price;
-					if(qty > 1){
-						unit = ' ' + i.Unit + 's';
-					}else{
-						unit = ' ' + i.Unit;
-					}
-					product.push(sprite);
-					receipt += getProduct(prodName, qty, unit, price.toFixed(2), ttl.toFixed(2));
+					receipt += getReceipt(qty,inputs, ttl, price, receipt, i, prodName);
 					ttlYuan += ttl;
 				}
 			case battery:
@@ -70,6 +60,16 @@ function printReceipt(inputs){
 	return receipt;
 }
 
+function getReceipt(qty,inputs, ttl, price, receipt, i, prodName){
+ 	let unit = '';
+	if(qty > 1){
+		unit = ' ' + i.Unit + 's';
+	}else{
+		unit = ' ' + i.Unit;
+	}
+	return getProduct(prodName, qty, unit, price.toFixed(2), ttl.toFixed(2));
+}
+
 function getQty(prod, id){
 	let qty = 0;
 	return qty = prod.reduce((acc, cur) => cur.Barcode === id ? ++acc : acc, 0);
@@ -79,7 +79,7 @@ function getProduct(prodName, qty, unit, price, ttl){
 	return `Name: ${prodName}, Quantity: ${qty}${unit}, Unit price: ${price} (yuan), Subtotal: ${ttl} (yuan)\n`;
 }
 
-function addTotal(qty, val){
+function getTotal(qty, val){
 	return qty + val;
 }
 
